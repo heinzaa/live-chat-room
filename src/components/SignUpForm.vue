@@ -3,7 +3,8 @@
       <input type="text" required placeholder="display name" v-model="displyName" />
       <input type="email" required placeholder="email" v-model="email" />
       <input type="password" required placeholder="password" v-model="password" />
-      <button>Sign up </button>
+      <div class="error"> {{error}}</div>
+      <button id="login">Sign up </button>
   </form>
 </template>
 
@@ -12,7 +13,7 @@ import { ref } from '@vue/reactivity'
 import useSignup from '../composables/useSignup'
 export default {
 
-   setup(){ 
+   setup(props, context){ 
 
        const { error, signup } = useSignup()
 
@@ -24,9 +25,13 @@ export default {
 
       const handleSubmit = async() => {
         await signup(email.value, password.value, displyName.value);
+         if(!error.value){
+              context.emit('SignUp');
+
+          }
       }
 
-       return {displyName, email, password, handleSubmit}
+       return {displyName, email, password, handleSubmit, error}
    }
 
 
@@ -34,5 +39,9 @@ export default {
 </script>
 
 <style>
+
+ #login {
+        cursor: pointer;
+    }
 
 </style>
